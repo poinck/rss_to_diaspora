@@ -9,7 +9,7 @@ config.read('config')
 
 pod = config['GF']['pod']
 user = config['GF']['user']
-password = config['FG']['password']
+password = config['GF']['password']
 
 if __name__ == '__main__':
     gfbot = RSSBot(gf_feed, ['#gnufunzt'], pod, user, password)

@@ -18,8 +18,7 @@ class RSSBot(object):
         return markdown
 
     def html_to_markdown(self, text):
-        """ Should be overwritten and customized for your rss feed.
-        """
+    
         # replace paragraphs
         text = re.sub(r'<p>(.*?)</p>',
                       r'\1\n\n',
@@ -46,6 +45,16 @@ class RSSBot(object):
         text = re.sub(r'<h[3456]>(.*?)</h[3456]>',
                       r'### \1',
                       text)
+                      
+        # replace title
+        text = re.sub(r'<title>(.*?)</title>',
+                      r'### \1',
+                      text)
+                      
+        # replace bold text
+        text = re.sub(r'<b>(.*?)</b>',
+                      r'** \1',
+                      text)
 
         # replace imgages
         text = re.sub(r'<img(.*?)>',
@@ -68,7 +77,7 @@ class RSSBot(object):
             feed = self.get_feed(self.feed_url)
         except:
             print('Feed could not be fetched')
-            Timer(60.0, self.check_for_new_feed_item).start()
+            Timer(1440.0, self.check_for_new_feed_item).start()
             return
         # Test if there's a new feed item
         try:
@@ -78,7 +87,7 @@ class RSSBot(object):
                     new_id = feed.entries[0].id
                 except IndexError:
                     print("The feed doesn't contain any entries.")
-                    Timer(60.0, self.check_for_new_feed_item).start()
+                    Timer(1440.0, self.check_for_new_feed_item).start()
                     return
                 if new_id != old_id:
                     self.post_entry(feed.entries[0])
@@ -89,7 +98,7 @@ class RSSBot(object):
             with open(self.file_location, 'w') as f:
                 f.write(feed.entries[0].id)
             self.post_entry(feed.entries[0])
-        Timer(60.0, self.check_for_new_feed_item).start()
+        Timer(1440, self.check_for_new_feed_item).start()
 
     def replace_links(self, match_obj):
         tag = ElementTree.XML(match_obj.group(0))
