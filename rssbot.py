@@ -48,7 +48,7 @@ class RSSBot(object):
                       
         # replace title
         text = re.sub(r'<title>(.*?)</title>',
-                      r'### \1',
+                      r'#### \1',
                       text)
                       
         # replace bold text
@@ -84,7 +84,7 @@ class RSSBot(object):
             with open(self.file_location, 'r') as f:
                 old_id = f.read()
                 try:
-                    new_id = feed.entries[0].id
+                    new_id = feed.entries[0].link
                 except IndexError:
                     print("The feed doesn't contain any entries.")
                     Timer(1440.0, self.check_for_new_feed_item).start()
@@ -93,10 +93,10 @@ class RSSBot(object):
                     self.post_entry(feed.entries[0])
                     f.close()
                     with open(self.file_location, 'w') as fw:
-                        fw.write(feed.entries[0].id)
+                        fw.write(feed.entries[0].link)
         except IOError:
             with open(self.file_location, 'w') as f:
-                f.write(feed.entries[0].id)
+                f.write(feed.entries[0].link)
             self.post_entry(feed.entries[0])
         Timer(1440, self.check_for_new_feed_item).start()
 
