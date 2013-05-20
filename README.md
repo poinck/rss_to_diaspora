@@ -9,6 +9,6 @@ An rss-bot which posts new items on diaspora. (forked to support YT-rss of GNU f
 - Create a file "config":
 
   [KEY]
-  pod = https://pod.geraspora.de
-  user =
-  password = 
+  pod = https://pod.geraspora.de  
+  user =  
+  password =  
